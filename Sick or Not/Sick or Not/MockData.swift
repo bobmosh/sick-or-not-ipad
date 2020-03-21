@@ -34,7 +34,7 @@ Hoheluftchaussee 76,
 06647 Bad Bibra
 """,
                             testStatus: .Negative),
-                TestSubject(subjectName: "Andrea Hoffmann",
+                TestSubject(subjectName: "Martina Hoffmann",
                             adress: """
 Ziegelstr. 23,
 94099 Ruhstorf
