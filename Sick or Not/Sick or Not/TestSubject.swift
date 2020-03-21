@@ -29,7 +29,7 @@ class TestSubject: Identifiable {
         case .Positive:
             return Color.red
         case .Pending:
-            return Color.secondary
+            return Color.accentColor
         default:
             return Color.black
         }

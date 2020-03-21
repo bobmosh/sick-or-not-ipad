@@ -10,21 +10,48 @@ import Foundation
 
 class MockData {
     static func generateMockSubjects() -> [TestSubject] {
-        return [TestSubject(subjectName: "Max Musterman",
-                            adress: "Richard-Wagner-Straße 27, Stuttgart",
+        return [TestSubject(subjectName: "Steffen Reiniger",
+                            adress: """
+Stuttgarter Platz 17,
+48683 Ahaus
+""",
                             testStatus: .Pending),
-                TestSubject(subjectName: "Jan Musterman",
-                            adress: "Wagnerstraße 27, Ulm",
+                TestSubject(subjectName: "Tom Muller",
+                            adress: """
+Am Borsigturm 9,
+42549 Velbert Birth
+""",
                             testStatus: .Positive),
-                TestSubject(subjectName: "Jan Musterman",
-                            adress: "Wagnerstraße 27, Ulm",
+                TestSubject(subjectName: "Max Baader",
+                            adress: """
+Bayreuther Strasse 84,
+72762 Reutlingen Kaibach
+""",
                             testStatus: .Positive),
-                TestSubject(subjectName: "Jan Musterman",
-                            adress: "Wagnerstraße 27, Ulm",
+                TestSubject(subjectName: "Annett Wechsler",
+                            adress: """
+Hoheluftchaussee 76,
+06647 Bad Bibra
+""",
                             testStatus: .Negative),
-                TestSubject(subjectName: "Jan Musterman",
-                            adress: "Wagnerstraße 27, Ulm",
-                            testStatus: .Untested)]
+                TestSubject(subjectName: "Andrea Hoffmann",
+                            adress: """
+Ziegelstr. 23,
+94099 Ruhstorf
+""",
+                            testStatus: .Untested),
+                TestSubject(subjectName: "Andrea Braun",
+                            adress: """
+Jenaer Strasse 54,
+42279 Wuppertal Barmen
+""",
+                            testStatus: .Positive),
+                TestSubject(subjectName: "Stefanie Frei",
+                            adress: """
+Rudolstaedter Strasse 66,
+49751 Werpeloh
+""",
+                            testStatus: .Pending)]
     }
     
     static func generateMockStates() -> [CountryState] {
