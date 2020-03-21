@@ -113,8 +113,8 @@
 				3BCAE4DE242661B9006CDA15 /* Info.plist */,
 				3BCAE4D8242661B9006CDA15 /* Preview Content */,
 				3BCAE5002426620B006CDA15 /* CountryState.swift */,
-				3BCAE5012426620B006CDA15 /* MockData.swift */,
 				3BCAE50424266513006CDA15 /* TestSubject.swift */,
+				3BCAE5012426620B006CDA15 /* MockData.swift */,
 			);
 			path = "Sick or Not";
 			sourceTree = "<group>";

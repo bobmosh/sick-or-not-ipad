@@ -7,6 +7,39 @@
 //
 
 import Foundation
+import SwiftUI
 
-class TestSubject {
+enum TestStatus: String, CaseIterable {
+    case Undefined
+    case Untested
+    case Pending
+    case Positive
+    case Negative
+}
+
+class TestSubject: Identifiable {
+    public let id = UUID()
+    public var subjectName: String
+    public var adress: String
+    public var testStatus: TestStatus
+    public var statusColor: Color {
+        switch testStatus {
+        case .Negative:
+            return Color.green
+        case .Positive:
+            return Color.red
+        case .Pending:
+            return Color.secondary
+        default:
+            return Color.black
+        }
+    }
+
+    init(subjectName: String,
+         adress: String,
+         testStatus: TestStatus) {
+        self.subjectName = subjectName
+        self.adress = adress
+        self.testStatus = testStatus
+    }
 }

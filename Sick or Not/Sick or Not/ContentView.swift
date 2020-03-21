@@ -28,7 +28,7 @@ struct Sidebar: View {
             Section(header: Text("Visualize")) { NavigationLink(destination: analyticsView()) { Text("Visualize") } }
             Section(header: Text("Data Source")) {
                 ForEach(states, id: \.id) { item in
-                    NavigationLink(destination: sidebarState()) {
+                    NavigationLink(destination: TestSubjectView(countryState: .BadenWuertemberg)) {
                         Text(item.name)
                     }
                 }
@@ -37,12 +37,36 @@ struct Sidebar: View {
     }
 }
 
-struct sidebarState: View {
+struct TestSubjectView: View {
+    var countryState: GermanState
+    @State var filter: TestStatus = .Undefined
+
     var body: some View {
-        Form {
-            ForEach(states, id: \.id) { item in
-                Button(action: { }) {
-                    Text(item.name)
+        VStack {
+            Picker("Filter by:", selection: $filter) {
+                Text("All")
+                    .tag(TestStatus.Undefined)
+                Text("Negative")
+                    .tag(TestStatus.Negative)
+                Text("Positive")
+                    .tag(TestStatus.Positive)
+                Text("Pending")
+                    .tag(TestStatus.Pending)
+                Text("Untested")
+                    .tag(TestStatus.Untested)
+                }
+            .pickerStyle(SegmentedPickerStyle())
+                .padding()
+            Form {
+                ForEach(MockData.generateMockSubjects().filter({ sub -> Bool in
+                    if filter == .Undefined { return true }
+                    return sub.testStatus == filter
+                }), id: \.id) { item in
+                    HStack {
+                        Text(item.subjectName)
+                        Spacer()
+                        Text(item.adress)
+                    }.foregroundColor(item.statusColor)
                 }
             }
         }

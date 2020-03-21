@@ -9,7 +9,23 @@
 import Foundation
 
 class MockData {
-
+    static func generateMockSubjects() -> [TestSubject] {
+        return [TestSubject(subjectName: "Max Musterman",
+                            adress: "Richard-Wagner-Straße 27, Stuttgart",
+                            testStatus: .Pending),
+                TestSubject(subjectName: "Jan Musterman",
+                            adress: "Wagnerstraße 27, Ulm",
+                            testStatus: .Positive),
+                TestSubject(subjectName: "Jan Musterman",
+                            adress: "Wagnerstraße 27, Ulm",
+                            testStatus: .Positive),
+                TestSubject(subjectName: "Jan Musterman",
+                            adress: "Wagnerstraße 27, Ulm",
+                            testStatus: .Negative),
+                TestSubject(subjectName: "Jan Musterman",
+                            adress: "Wagnerstraße 27, Ulm",
+                            testStatus: .Untested)]
+    }
     
     static func generateMockStates() -> [CountryState] {
         return [CountryState(name: "Baden-Würtemberg",
