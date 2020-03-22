@@ -112,6 +112,7 @@ struct TestSubjectDetailView: View {
                 }
                 Section(header: Text("Test Status")) {
                     Text(item.testStatus.rawValue)
+                        .foregroundColor(item.statusColor)
                 }
                 Text("ID: " + item.id.uuidString)
             }
