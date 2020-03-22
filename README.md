@@ -1,5 +1,6 @@
 # Sick or Not
-![Overview Screenshots](/screenshots/overview.png)
+![Visualisation](/screenshots/Visualizsation_small.jpg)
+![Data Table](/screenshots/DataTable_small.jpg)
 
 ## Project details
 This project was created during the #wirvsvirus hackathon.
