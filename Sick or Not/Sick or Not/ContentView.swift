@@ -14,18 +14,17 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             Sidebar()
-                .frame(maxWidth: 300, alignment: .leading)
-                .navigationBarTitle("Sick or Not",displayMode: .large)
-            }
-        .padding(0.3)
+            .navigationBarTitle("Sick or Not",displayMode: .large)
+        }   .padding(0.3)
             .navigationViewStyle(DefaultNavigationViewStyle())
+            .background(Color.secondary)
     }
 }
 
 struct Sidebar: View {
     var body: some View {
-        List {
-            Section(header: Text("Visualize")) { NavigationLink(destination: analyticsView()) { Text("Visualize") } }
+        Form {
+            Section(header: Text("Visualize")) { NavigationLink(destination: AnalyticsView()) { Text("Visualize") } }
             Section(header: Text("Data Source")) {
                 ForEach(states, id: \.id) { item in
                     NavigationLink(destination: TestSubjectView(countryState: .BadenWuertemberg)) {
@@ -38,6 +37,7 @@ struct Sidebar: View {
 }
 
 struct TestSubjectView: View {
+    var data = MockData.generateMockSubjects().shuffled()
     var countryState: GermanState
     @State var filter: TestStatus = .Undefined
 
@@ -58,7 +58,7 @@ struct TestSubjectView: View {
             .pickerStyle(SegmentedPickerStyle())
                 .padding()
             Form {
-                ForEach(MockData.generateMockSubjects().filter({ sub -> Bool in
+                ForEach(data.filter({ sub -> Bool in
                     if filter == .Undefined { return true }
                     return sub.testStatus == filter
                 }), id: \.id) { item in
@@ -120,39 +120,39 @@ struct TestSubjectDetailView: View {
     }
 }
 
-struct analyticsView: View {
+struct AnalyticsView: View {
     @State var timePoint = 0.0
     @State var caseFilter = 0
 
     var body: some View {
-        VStack {
-            Spacer()
-            Picker(selection: $caseFilter, label: Text("Filter for:")) {
-                Text("Sickness Cases").tag(0)
-                Text("Mortality Cases").tag(1)
-                Text("Recovery Cases").tag(2)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            mapView(timePoint: $timePoint, caseFilter: $caseFilter)
-            Button(action: {
-                UIApplication.shared.open(URL(string: "https://www.vexels.com/vectors/preview/149109/germany-states-map")!)
-            }) {
-                Text("Image from vexels.com")
-            }.foregroundColor(Color.gray)
-            Spacer()
+        ScrollView {
             VStack {
-                HStack {
-                    Button(action: { }) {
-                        Text("31.01.2020")
-                    }
-                    Spacer()
-                    Button(action: { }) {
-                        Text("Today")
-                    }
+                Picker(selection: $caseFilter, label: Text("Filter for:")) {
+                    Text("Sickness Cases").tag(0)
+                    Text("Mortality Cases").tag(1)
+                    Text("Recovery Cases").tag(2)
                 }
-                Slider(value: $timePoint, in: 0...1, step: 0.01)
-            }.padding()
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+                mapView(timePoint: $timePoint, caseFilter: $caseFilter)
+                Button(action: {
+                    UIApplication.shared.open(URL(string: "https://www.vexels.com/vectors/preview/149109/germany-states-map")!)
+                }) {
+                    Text("Image from vexels.com")
+                }.foregroundColor(Color.gray)
+                VStack {
+                    HStack {
+                        Button(action: { }) {
+                            Text("31.01.2020")
+                        }
+                        Spacer()
+                        Button(action: { }) {
+                            Text("Today")
+                        }
+                    }
+                    Slider(value: $timePoint, in: 0...1, step: 0.01)
+                }.padding()
+            }.navigationBarTitle("Visualize")
         }
     }
 }
