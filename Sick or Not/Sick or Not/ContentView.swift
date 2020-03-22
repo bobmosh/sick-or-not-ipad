@@ -17,7 +17,7 @@ struct ContentView: View {
                 .frame(maxWidth: 300, alignment: .leading)
                 .navigationBarTitle("Sick or Not",displayMode: .large)
             }
-        .padding(1)
+        .padding(0.3)
             .navigationViewStyle(DefaultNavigationViewStyle())
     }
 }
@@ -62,12 +62,58 @@ struct TestSubjectView: View {
                     if filter == .Undefined { return true }
                     return sub.testStatus == filter
                 }), id: \.id) { item in
-                    HStack {
-                        Text(item.subjectName)
-                        Spacer()
-                        Text(item.adress)
-                    }.foregroundColor(item.statusColor)
+                    DataEntry(item: item)
                 }
+            }
+        }
+    }
+}
+
+struct DataEntry: View {
+    var item: TestSubject
+    @State var showingModal = false
+
+    var body: some View {
+        HStack {
+            Text(item.subjectName)
+            Spacer()
+            Text(item.testStatus.rawValue)
+
+            Button("") {
+                self.showingModal.toggle()
+            }.sheet(isPresented: $showingModal) {
+                TestSubjectDetailView(item: self.item) { self.showingModal = false }
+            }
+        }.foregroundColor(item.statusColor)
+    }
+}
+
+struct TestSubjectDetailView: View {
+    var item: TestSubject
+    var onDismiss: () -> ()
+
+    var body: some View {
+        VStack {
+            ZStack {
+                Text(item.subjectName)
+                    .font(Font.title)
+                    .multilineTextAlignment(.center)
+                Button(action: onDismiss) { Text("Done") }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .multilineTextAlignment(.trailing)
+            }.frame(maxWidth: .infinity)
+            .padding([.leading,.trailing,.top])
+            Form {
+                Section(header: Text("Name")) {
+                    Text(item.subjectName)
+                }
+                Section(header: Text("Adress")) {
+                    Text(item.adress)
+                }
+                Section(header: Text("Test Status")) {
+                    Text(item.testStatus.rawValue)
+                }
+                Text("ID: " + item.id.uuidString)
             }
         }
     }
@@ -75,17 +121,25 @@ struct TestSubjectView: View {
 
 struct analyticsView: View {
     @State var timePoint = 0.0
+    @State var caseFilter = 0
 
     var body: some View {
         VStack {
             Spacer()
-            mapView(timePoint: $timePoint)
-            Spacer()
+            Picker(selection: $caseFilter, label: Text("Filter for:")) {
+                Text("Sickness Cases").tag(0)
+                Text("Mortality Cases").tag(1)
+                Text("Recovery Cases").tag(2)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            mapView(timePoint: $timePoint, caseFilter: $caseFilter)
             Button(action: {
                 UIApplication.shared.open(URL(string: "https://www.vexels.com/vectors/preview/149109/germany-states-map")!)
             }) {
                 Text("Image from vexels.com")
             }.foregroundColor(Color.gray)
+            Spacer()
             VStack {
                 HStack {
                     Button(action: { }) {
@@ -105,23 +159,42 @@ struct analyticsView: View {
 struct mapView: View {
     var mockData: [CountryState] = states
     @Binding var timePoint: Double
+    @Binding var caseFilter: Int
 
     var body: some View {
         let highestSicknessRate = mockData.sorted { (lhs, rhs) -> Bool in
             return lhs.sicknessRate > rhs.sicknessRate
         }
 
+        var filterColor: Color {
+            get {
+                switch caseFilter {
+                case 0:
+                    return Color.blue
+                case 1:
+                    return Color.red
+                case 2:
+                    return Color.green
+                default:
+                    return Color.black
+                }
+            }
+        }
+
         return ZStack {
             Image("Base Map")
                 .resizable()
                 .scaledToFit()
+                .opacity(0.5)
             ForEach(highestSicknessRate) { item in
                 Image("State " + String(item.name))
                     .resizable()
                     .scaledToFit()
                     .opacity(item.sickCases != 0 ? (Double(item.sickCases) * self.timePoint) / Double(highestSicknessRate.first!.sickCases) : 0.0)
             }
-        }.padding(16)
+        }
+        .padding(16)
+        .colorMultiply(filterColor)
     }
 }
 
