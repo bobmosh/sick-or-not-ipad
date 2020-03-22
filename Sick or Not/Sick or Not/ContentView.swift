@@ -17,7 +17,7 @@ struct ContentView: View {
             .navigationBarTitle("Sick or Not",displayMode: .large)
         }   .padding(0.3)
             .navigationViewStyle(DefaultNavigationViewStyle())
-            .background(Color.secondary)
+            .edgesIgnoringSafeArea(.bottom)
     }
 }
 
